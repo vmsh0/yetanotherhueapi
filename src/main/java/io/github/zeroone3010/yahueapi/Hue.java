@@ -7,6 +7,7 @@ import io.github.zeroone3010.yahueapi.domain.ApiInitializationStatus;
 import io.github.zeroone3010.yahueapi.domain.Group;
 import io.github.zeroone3010.yahueapi.domain.Root;
 import io.github.zeroone3010.yahueapi.domain.Scene;
+import io.github.zeroone3010.yahueapi.domain.SensorDto;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -149,7 +150,8 @@ public final class Hue {
                 : room.getName(),
             room -> room)));
 
-    this.sensors = Collections.unmodifiableMap(root.getSensors().entrySet().stream()
+    final Map<String, SensorDto> sensorsMap = root.getSensors() != null ? root.getSensors() : Collections.emptyMap();
+    this.sensors = Collections.unmodifiableMap(sensorsMap.entrySet().stream()
         .map(sensor -> buildSensor(sensor.getKey(), root))
         .collect(toMap(Sensor::getId, sensor -> sensor)));
 
